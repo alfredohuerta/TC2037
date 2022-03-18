@@ -17,9 +17,9 @@ void lexerAritmetico(string archivo) {
     // definimos los operadores aritmeticos
     string variable = "[a-zA-Z][a-zA-Z_0-9]*";
     string operadores = "[\\*|\\/|\\^|\\=|\\+|\\-]";
-    string reales = "-*[0-9]+\\.[0-9]+([E][-*][0-9]+)?|-*[0-9]+(\\.[0-9]+)?";
+    string reales = "-*[0-9]+\\.[0-9]+([E][-*][0-9]+)?|-*[0-9]+(\\.[0-9]+)?"; // con los () y ? decimos que eso puede o no estar en la funcion establecid
     string especiales = "[\\(\\)]";
-    string comentarios = "\\/\\/\\.*\\s"; //. cualquier caracter menos un salto de linea
+    string comentarios = " //.*$"; //. cualquier elemento  y el $ indica que continua hasta llegar al final de la linea 
 
     // solo debemos tener un regex, entonces juntamos las strings anteriores
     regex regex_tokens(variable +"|"+ operadores +"|"+ reales +"|"+ especiales +"|"+ comentarios); // +"|"+ ees variable OR operador y el + es para agregar
