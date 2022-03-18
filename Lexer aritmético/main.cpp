@@ -6,6 +6,7 @@
  * qué tipo son.
  * @version 0.1
  * @date 2022-03-17
+ * @link https://github.com/alfredohuerta/TC2037/tree/main/Lexer%20aritmético @endlink
  */
 
 #include <iostream>
