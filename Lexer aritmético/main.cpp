@@ -3,7 +3,6 @@
 #include <vector>
 #include <sstream>
 #include <regex>
-
 using namespace std;
 
 void lexerAritmetico(string archivo) {
@@ -14,27 +13,57 @@ void lexerAritmetico(string archivo) {
 
 
   while(getline(pruebas, resultados)){
-    //regex regex_variables("[a-zA-Z][a-zA-Z_0-9]* | [+-][0-9]+|[+-][0-9]+[\\.][0-9]+ | [+-][0-9]+[\\.][0-9]+[e-E][0-9]+ | [\\*\\/\\^\\=\\+\\-] | [\\(\\)] | [\\/\\/");
-    cout << "0" << endl;
-    regex regex_exponencial("[+-][0-9]+[\\.][0-9]+[eE][0-9]+");
-    cout << "1" << endl;
-    regex regex_numeros("[+-][0-9]+|[+-][0-9]+[\\.][0-9]+");
-    cout << "2" << endl;
-    regex regex_comentarios("[\\/\\/][a-zA-Z]*[0-9]*[\\!]*[\\/n]");
-    cout << "3" << endl;
-    regex regex_operadores("[\\*\\/\\^\\=\\+\\-]");
-    cout << "4" << endl;
-    regex regex_especiales("[\\(\\)]");
-    cout << "5" << endl;
-    regex regex_variables("[a-zA-Z][a-zA-Z_0-9]*");
-    cout << "4" << endl;
 
-    break;
+    // definimos los operadores aritmeticos
+    string variable = "[a-zA-Z][a-zA-Z_0-9]*";
+    string operadores = "[\\*|\\/|\\^|\\=|\\+|\\-]";
+    string reales = "-*[0-9]+\\.[0-9]+([eE][0-9]+)?";
+    string especiales = "[\\(\\)]";
+    string comentarios = "\\/\\/.*"; //. cualquier caracter menos un salto de linea
+
+    // solo debemos tener un regex, entonces juntamos las strings anteriores
+    regex regex_tokens(variable +"|"+ operadores +"|"+ reales +"|"+ especiales +"|"+ comentarios); // +"|"+ ees variable OR operador y el + es para agregar
+
+    // definimos nuestro iterador para ir recorriendo y buscar en regex los tokens
+   auto inicio_arch = 
+        // iterador para ir recorriendo match por match y detectarlos en regex_tokens
+        std::sregex_iterator(resultados.begin(), resultados.end(), regex_tokens); // leer de resultados incio a resultados final 
+    auto fin_arch = std::sregex_iterator(); // cuando ya no tenga mas elementos se deja de leer 
+
+    // vamos a ir leyendo caracter x caracter, al detectar su token, pasamos al siguiente carcater
+    for (std::sregex_iterator i = inicio_arch; i != fin_arch; ++i) {
+      std::smatch match = *i; // con el * lo desreferencia, desapuntador                                               
+      std::string caracter = match.str(); // lo convertimos a string
+      if(regex_match(caracter, regex(variable))){ //ya que tebemos el string, vemos si esta hace match con el regex, que basta solo con poner regex ya que se llama al constructor
+        cout << caracter << " -> Token de Variable" << endl;
+      }else if(regex_match(caracter, regex(reales))){
+        cout << caracter << " -> Token de numero real" << endl;
+      }else if(regex_match(caracter, regex(comentarios))){
+        cout << caracter << " -> Token de comentario" << endl;
+      }else if(regex_match(caracter, regex(especiales))){
+        if(caracter == "("){
+          cout << caracter << " -> Token especial, parentesis que abre" << endl;
+        }else{
+          cout << caracter << " -> Token especial, parentesis que cierra" << endl;
+        }
+      }else if(regex_match(caracter, regex(operadores))){
+        if(caracter == "="){
+          cout << caracter << " -> Token operador, asignacion" << endl;
+        }
+      }else if(caracter == "+"){
+        cout << caracter << " -> Token operador, suma" << endl;
+      }else if(caracter == "-"){
+        cout << caracter << " -> Token operador, resta" << endl;
+      }else if(caracter == "*"){
+        cout << caracter << " -> Token operador, multiplicacion" << endl;
+      }else if(caracter == "/"){
+        cout << caracter << " -> Token operador, division" << endl;
+      }else{
+        cout << caracter << " -> Token operador, potencia" << endl;
+      }
+    }
   }
-
 }
-
-
 
 int main(int argc, char* argv[]) {
   if (argc != 2) {
