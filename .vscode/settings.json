@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "ostream": "cpp"
+    },
+    "files.autoSave": "onWindowChange",
+    "code-runner.ignoreSelection": true
+}

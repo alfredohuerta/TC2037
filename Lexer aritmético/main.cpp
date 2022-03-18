@@ -1,3 +1,11 @@
+/**
+ * @file main.cpp
+ * @author Denisse Domínguez Bolaños - A01702603 & Erick Alfredo García Huerta - A01708119
+ * @brief Programa que reciba como entrada un archivo de texto que contenga expresiones aritméticas y comentarios, y nos regrese una tabla con cada uno de sus tokens encontrados, en el orden en que fueron encontrados e indicando de qué tipo son.
+ * @version 0.1
+ * @date 2022-03-17
+ */
+
 #include <iostream>
 #include <fstream>
 #include <vector>
