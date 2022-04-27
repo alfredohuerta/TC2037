@@ -1,0 +1,21 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-advanced-reader.ss" "lang")((modname |Actividad 2.2 Programación funcional, parte 2|) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #t #t none #f () #f)))
+;; Erick Alfredo García Huerta - A01708119
+
+;; Constantes
+(define empty-list '())
+
+;; 1. La funcíon insert toma dos entradas: un ńumero n y una lista lst que contiene ńumeros en orden ascendente. Devuelve una nueva lista con los mismos elementos de lst pero con n insertado en su lugar correspondiente.
+(define insert
+  (lambda (n lst)
+    (append (list n) lst)))
+
+;; 2. La funcíon insertion-sort toma una lista desordenada de ńumeros como entrada y devuelve una nueva lista con los mismos elementos pero en orden ascendente. Se debe usar la funcíon de insert definida en el ejercicio anterior para escribir insertion-sort. No se debe utilizar la funcíon sort o alguna similar predefinida.
+(define insertion-sort
+  (lambda (n lst)
+    (insert (n lst))
+    (cond
+      [(null? lst) '()]
+      [else
+       (sort lst <)])))
