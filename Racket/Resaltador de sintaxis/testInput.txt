@@ -10,4 +10,6 @@ continue	if	signed	virtual
 default	inline	sizeof	void
 delete	int	static	volatile
 do	long	struct	while
-variable	123.45	1e20 -132.2
+
+variable	123.45	1e20 -132.2	//Esto es un comentario
+

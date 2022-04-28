@@ -21,13 +21,13 @@
 
 ;;(define input-characters (file->list-of-chars input-file))
 (define list-of-chars->file
-  (lambda (lst filename)
-    (write-file filename (list->string lst))))
+  (lambda (lst aux)
+    (cons (list->string lst) aux)))
 
 (define copy-and-upcase
-  (lambda (input-file output-file)
+  (lambda (input-file)
     (list-of-chars->file
      (map char-upcase (file->list-of-chars input-file))
-     output-file)))
+     '())))
 
 ;; (map char-upcase (file->list-of-chars input-file))
