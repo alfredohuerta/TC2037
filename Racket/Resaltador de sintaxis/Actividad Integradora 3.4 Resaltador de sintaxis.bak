@@ -1,7 +1,0 @@
-#lang racket
-(require 2htdp/batch-io)
-(require racket/trace)
-
-(define matches
-  (lambda
-      [(regexp-match #rx"[a-zA-Z][a-zA-Z_0-9]*")]
