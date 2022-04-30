@@ -70,7 +70,7 @@ y cuando se encuentra con un espacio vacío (#\tab, #\space, #\newline) conviert
       
       ;; Operadores
       [(regexp-match #rx"[\\*|\\/|\\^|\\=|\\+|\\-]"
-       (string-append "<div id=\"Operadores\">" (car strList) "</div>"))]
+       (inicio_html(string-append "<div id=\"Operadores\">" (car strList) "</div>")))]
       
       ;; Números reales
       [(regexp-match #rx"-*[0-9]+\\.[0-9]+([E][-*][0-9]+)?|-*[0-9]+(\\.[0-9]+)?"
@@ -85,7 +85,7 @@ y cuando se encuentra con un espacio vacío (#\tab, #\space, #\newline) conviert
        (inicio_html(string-append "<div id=\"Comentarios\">" (car strList) "</div>")))]
       
       [else
-       (inicio_html(matches (cdr strList) result))])))
+       (matches (cdr strList) result)])))
 
 (define inicio_html
   (list
