@@ -61,52 +61,33 @@ y cuando se encuentra con un espacio vacío (#\tab, #\space, #\newline) conviert
        result]
       
       ;; Palabras reservadas
-      [(regexp-match #rx"[alignas|alignof|and|and_eq|asm|atomic_cancel|atomic_commit|atomic_noexcept|auto|bitand|bitor|bool|break|case|catch|char|char8_t|char16_t|char32_t|class|compl|concept|const|consteval|constexpr|constinit|const_cast|continue|co_await|co_return|co_yield|decltype|default|delete|do|double|dynamic_cast|else|enum|explicit|export|extern|false|float|for|friend|goto|if|inline|int|long|mutable|namespace|new|noexcept|not|not_eq|nullptr|operator|or|or_eq|private|protected|public|reflexpr|register|reinterpret_cast|requires|return|short|signed|sizeof|static|static_assert|static_cast|struct|switch|synchronized|template|this|thread_local|throw|true|try|typedef|typeid|typename|union|unsigned|using|virtual|void|volatile|wchar_t|while|xor|xor_eq)]"
-       (inicio_html(string-append "<div id=\"PReservada\">" (car strList) "</div>")))]
+      [(regexp-match #rx"[alignas|alignof|and|and_eq|asm|atomic_cancel|atomic_commit|atomic_noexcept|auto|bitand|bitor|bool|break|case|catch|char|char8_t|char16_t|char32_t|class|compl|concept|const|consteval|constexpr|constinit|const_cast|continue|co_await|co_return|co_yield|decltype|default|delete|do|double|dynamic_cast|else|enum|explicit|export|extern|false|float|for|friend|goto|if|inline|int|long|mutable|namespace|new|noexcept|not|not_eq|nullptr|operator|or|or_eq|private|protected|public|reflexpr|register|reinterpret_cast|requires|return|short|signed|sizeof|static|static_assert|static_cast|struct|switch|synchronized|template|this|thread_local|throw|true|try|typedef|typeid|typename|union|unsigned|using|virtual|void|volatile|wchar_t|while|xor|xor_eq)]" (car strList))
+       ]
       
       ;; Variables
-      [(regexp-match #rx"[a-zA-Z][a-zA-Z_0-9]*" 
-       (inicio_html(string-append "<div id=\"Variables\">" (car strList) "</div>")))]
+      [(regexp-match #rx"[a-zA-Z][a-zA-Z_0-9]*" (car strList))
+       ]
       
       ;; Operadores
-      [(regexp-match #rx"[\\*|\\/|\\^|\\=|\\+|\\-]"
-       (string-append "<div id=\"Operadores\">" (car strList) "</div>"))]
+      [(regexp-match #rx"[\\*|\\/|\\^|\\=|\\+|\\-]" (car strList))
+       ]
       
       ;; Números reales
-      [(regexp-match #rx"-*[0-9]+\\.[0-9]+([E][-*][0-9]+)?|-*[0-9]+(\\.[0-9]+)?"
-       (inicio_html(string-append "<div id=\"Reales\">" (car strList) "</div>")))]
+      [(regexp-match #rx"-*[0-9]+\\.[0-9]+([E][-*][0-9]+)?|-*[0-9]+(\\.[0-9]+)?" (car strList))
+       ]
       
       ;; Caracteres especiales
-      [(regexp-match #rx"[\\(\\)\\#\\;\\.\\{\\}\\<\\>]"
-       (inicio_html(string-append "<div id=\"Especiales\">" (car strList) "</div>")))]
+      [(regexp-match #rx"[\\(\\)\\#\\;\\.\\{\\}\\<\\>]" (car strList))
+       ]
       
       ;; Comentarios
-      [(regexp-match #rx"//.*$"
-       (inicio_html(string-append "<div id=\"Comentarios\">" (car strList) "</div>")))]
+      [(regexp-match #rx"//.*$" (car strList))
+       ]
       
       [else
-       (inicio_html(matches (cdr strList) result))])))
-
-(define inicio_html
-  (list
-   "<!DOCTYPE html>\n"
-   "<html lang=\"esp-mx\">\n"
-   "<head>\n"
-   "    <meta charset=\"UTF-8\">\n"
-   "    <title>Resaltador de sintaxis</title>\n"
-   "    <style>\n"
-   "        body{color: beige;}\n"
-   "        #PReservadas{color: blue;}\n"
-   "        #Variables{color: blueviolet;}\n"
-   "        #Operadores{color: aqua;}\n"
-   "        #Reales{color: chartreuse;}\n"
-   "        #Especiales{color: crimson;}\n"
-   "        #Comentarios{color: gold;}\n"
-   "    </style>\n"
-   "</head>\n"
-   "<body>\n"))
+       (matches (cdr strList) result])))
 
 (define test
   (lambda (filename)
-    (matches(string-list filename)'("reservadas") '("variables") '("operadores") '("reales")'("especiales")'("comentarios") '())))
+    (matches (string-list filename) '("reservadas") '("variables") '("operadores") '("reales")'("especiales")'("comentarios") '())))
 ;;
