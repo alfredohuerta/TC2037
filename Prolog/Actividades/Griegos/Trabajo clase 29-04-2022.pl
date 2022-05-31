@@ -64,3 +64,54 @@ removeFromList(Element, [Element | Tail], Result):-
 removeFromList(Element, [Head | Tail], [Head | NewList]):-
     Element \= Head,
     removeFromList(Element, Tail, NewList).
+
+%removeAllDuplicates(List, Result)
+removeAllDuplicates([], []).
+
+removeAllDuplicates([Head | Tail], [Head | R2]):-
+    removeFromList(Head, Tail, R1),
+    removeAllDuplicates(R1, R2).
+
+%insert(X, List1, List2)
+insert(X, [], [X]).
+
+insert(X, [Head | Tail], [X, Head | Tail]):-
+    X =< Head.
+
+insert(X, [Head | Tail], [Head | Aux]):-
+    X > Head,
+    insert(X, Tail, Aux).
+
+%iSort(List, TempList, OrderedList).
+iSort([], TempList, TempList).
+
+iSort([Head | Tail], TempList, OrderedList):-
+    insert(Head, TempList, NewTempList),
+    iSort(Tail, NewTempList, OrderedList).
+
+insertionSort(List, OrderedList):-
+    iSort(List, [], OrderedList).
+
+%getMax(X, List1, List1, Max)
+getMax(X, [], [], X).
+
+getMax(X, [Head | Tail], [Head | NewTail], Max):-
+    X > Head,
+    getMax(X, Tail, NewTail, Max).
+
+getMax(X, [Head | Tail], [X | NewTail], Max):-
+    X =< Head,
+    getMax(Head, Tail, NewTail, Max).
+
+%bSort(List, TempList, OrderedList).
+bSort([], tempList, tempList).
+
+bSort([Head | Tail], tempList, orderedList):-
+    getMax(Head, Tail, newTail, max).
+
+bSort([Head | Tail], tempList, orderedList):-
+    getMax(Head, Tail, newTail, max),
+    bSort(newTail, [max | tempList], orderedList).
+
+bubbleSort(List, orderedList):-
+    bSort(List, [], orderedList).
