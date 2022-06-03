@@ -1,6 +1,9 @@
 #include <iostream>
-
-
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <pthread.h>
 
 using namespace std;
 
@@ -8,11 +11,12 @@ const int MAX = 10;
 int acum = 0;
 
 void* add(void *param){
-    for(int i  0; i < MAX; i++){
+    for(int i= 0; i < MAX; i++){
         acum = acum + 1;
         cout << "Add acum = " << acum << "\n";
     }
-    pthreads_exit(0);
+    pthread_exit(NULL);
+    return ( (void *) 0 );
 }
 
 void* sub(void *param){
@@ -20,14 +24,15 @@ void* sub(void *param){
         acum = acum - 1;
         cout << "sub acum = " << acum << "\n";
     }
-    pthread_exit(0);
+    pthread_exit(NULL);
+    return ( (void *) 0 );
 }
 
 int main(int argc, char* argv[]){
     pthread_t t1, t2;
 
-    pthread_create(&t1, NULL, add NULL);
-    pthread_create(&t2, NULL, add NULL);
+    pthread_create(&t1, NULL, add, NULL);
+    pthread_create(&t2, NULL, add, NULL);
 
     pthread_join(t1, NULL);
     pthread_join(t2, NULL);

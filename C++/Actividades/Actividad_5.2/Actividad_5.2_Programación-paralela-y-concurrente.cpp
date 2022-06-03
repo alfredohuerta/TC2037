@@ -1,16 +1,24 @@
 #include <iostream>
+#include <iomanip>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
 
+#include "utils.h"
+
 using namespace std;
 
-#define MAX 5000000
-#define LIMIT 5
+#define SIZE 5000000
+#define THREADS = 4;
 
-bool primo_convencional(int x){
+typedef struct {
+  int start, end;
+  int *arr;
+} Block;
+
+bool isPrimo(int x){
     if(x < 2){
         return false;
     }
@@ -24,23 +32,32 @@ bool primo_convencional(int x){
     return true;
 }
 
-/*void* task(void* param) {
+void* primo_multihilo(void* param) {
+  double *acum;
+  Block *block;
   int i;
 
-  for (i = 0; i < LIMIT; i++) {
-    printf("PID = %i, TID = %li <=> i = %i\n", getpid(),
-            pthread_self(), i);
+  block = (Block *) paran;
+  acum = new double;
+  (*acum) = 0;
+
+  for(i = block->start; i <= block->end; i++){
+    if(isPrimo(i) == true){
+      (*acum) += block->arr[i];
+    }
   }
-  pthread_exit(NULL);
-}*/
+  
+  return ((void**) acum);
+}
 
 int main(int argc, char* argv[]) {
-  int count= 0;
   int correct = 1078070388;
-  double concour;
 
-  for(int i = 0; i<=MAX; i++){
-    if(primo_convencional(i) == true){
+  /*----------------------------------Secuencial--------------------------------------*/
+  int count= 0;
+
+  for(int i = 0; i<=SIZE; i++){
+    if(isPrimo(i) == true){
         count += i;
     }
   }
@@ -53,11 +70,50 @@ int main(int argc, char* argv[]) {
 
   cout << "Suma final: " << count << endl;
 
-  pthread_t tid;
+  /*----------------------------------Multi-hilo--------------------------------------*/
+  int *a, blocksize, i, j;
+  double ms, result, *acum;
+  Block blocks[THREADS];
+  pthread_t tids[THREADS];
 
-  pthread_create(&tid, NULL, task, NULL);
+  a = new int[SIZE];
+  fill_array(a, SIZE);
 
-  pthread_join(tid, NULL);
+  blocksize = SIZE / THREADS;
+
+  for(i = 0; i < THREADS; i++){
+    blocks[i].arr = a;
+    blocks[i].start = i * blocksize;
+
+    if(i != (THREADS - 1)){
+      blocks[i].end = (i + 1) * blocksize;
+    } else{
+      blocks[i].end = SIZE;
+    }
+  }
+
+  ms = 0;
+
+  for(j = 0; j < N; j++){
+    start_timer();
+
+    result = 0;
+
+    for(i = 0; i < THREADS; i++){
+      pthread_create(&tids[i], NULL, primo_multihilo, (void*) &blocks[i]);
+    }
+
+    for(i = 0; i < THREADS; i++){
+      pthread_join(tids[i], (void**) &acum);
+      delete acum;
+    }
+
+    ms += stop_timer();
+  }
+  cout << "sum = " << setprecision(5) << result << "\n";
+  cout << "avg time =  " << setprecision(5) << (ms / N) << "\n";
+
+  delete [] a;
 
   return 0;
 }
