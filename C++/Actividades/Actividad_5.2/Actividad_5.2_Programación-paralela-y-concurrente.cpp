@@ -15,7 +15,6 @@ const int threads = 4;
 
 typedef struct {
   int start, end;
-  int *arr;
 } Block;
 
 bool isPrimo(int x){
@@ -41,9 +40,9 @@ void* primo_multihilo(void* param) {
   acum = new double;
   (*acum) = 0;
 
-  for(i = block->start; i <= block->end; i++){
+  for(i = block->start; i < block->end; i++){
     if(isPrimo(i) == true){
-      (*acum) += block->arr[i];
+      (*acum) += i;
     }
   }
   
@@ -51,10 +50,10 @@ void* primo_multihilo(void* param) {
 }
 
 int main(int argc, char* argv[]) {
-  int correct = 1078070388;
+  double correct = 838596693108;
 
   /*----------------------------------Secuencial--------------------------------------*/
-  int count= 0;
+  double count= 0;
 
   for(int i = 0; i<=size; i++){
     if(isPrimo(i) == true){
@@ -71,18 +70,14 @@ int main(int argc, char* argv[]) {
   cout << "Suma final: " << count << endl;
 
   /*----------------------------------Multi-hilo--------------------------------------*/
-  int *a, blocksize, i, j;
+  int blocksize, i, j;
   double ms, result, *acum;
   Block blocks[threads];
   pthread_t tids[threads];
 
-  a = new int[size];
-  fill_array(a, size);
-
   blocksize = size / threads;
 
   for(i = 0; i < threads; i++){
-    blocks[i].arr = a;
     blocks[i].start = i * blocksize;
 
     if(i != (threads - 1)){
@@ -105,15 +100,20 @@ int main(int argc, char* argv[]) {
 
     for(i = 0; i < threads; i++){
       pthread_join(tids[i], (void**) &acum);
+      result += (*acum);
       delete acum;
     }
 
     ms += stop_timer();
   }
-  cout << "sum = " << setprecision(5) << result << "\n";
-  cout << "avg time =  " << setprecision(5) << (ms / N) << "\n";
+  
+  if(result == correct){
+    cout << "EXITO!!!   " << result << endl;
+  }else{
+    cout << "FALLO!!!   "<< result << "   !=   " << correct << endl;
+  }
 
-  delete [] a;
+  cout << "avg time =  " << setprecision(5) << (ms / N) << "ms\n";
 
   return 0;
 }
