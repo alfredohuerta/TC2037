@@ -35,29 +35,29 @@ bool primo_convencional(int x){
 }*/
 
 int main(int argc, char* argv[]) {
-    int count= 0;
-    int correct = 1078070388;
-    double concour;
+  int count= 0;
+  int correct = 1078070388;
+  double concour;
 
-    for(int i = 0; i<=MAX; i++){
-      if(primo_convencional(i) == true){
-          count += i;
-      }
+  for(int i = 0; i<=MAX; i++){
+    if(primo_convencional(i) == true){
+        count += i;
     }
+  }
 
-    if(count == correct){
-      cout << "EXITO!!!" << endl;
-    }else{
-      cout << "FALLO!!!   " << count << "   !=   " << correct << endl;
-    }
+  if(count == correct){
+    cout << "EXITO!!!" << endl;
+  }else{
+    cout << "FALLO!!!   " << count << "   !=   " << correct << endl;
+  }
 
-    cout << "Suma final: " << count << endl;
+  cout << "Suma final: " << count << endl;
 
-  /*pthread_t tid;
+  pthread_t tid;
 
   pthread_create(&tid, NULL, task, NULL);
 
-  pthread_join(tid, NULL);*/
+  pthread_join(tid, NULL);
 
   return 0;
 }
