@@ -10,8 +10,8 @@
 
 using namespace std;
 
-#define SIZE 5000000
-#define THREADS = 4;
+const int size = 5000000;
+const int threads = 4;
 
 typedef struct {
   int start, end;
@@ -37,7 +37,7 @@ void* primo_multihilo(void* param) {
   Block *block;
   int i;
 
-  block = (Block *) paran;
+  block = (Block *) param;
   acum = new double;
   (*acum) = 0;
 
@@ -56,7 +56,7 @@ int main(int argc, char* argv[]) {
   /*----------------------------------Secuencial--------------------------------------*/
   int count= 0;
 
-  for(int i = 0; i<=SIZE; i++){
+  for(int i = 0; i<=size; i++){
     if(isPrimo(i) == true){
         count += i;
     }
@@ -73,22 +73,22 @@ int main(int argc, char* argv[]) {
   /*----------------------------------Multi-hilo--------------------------------------*/
   int *a, blocksize, i, j;
   double ms, result, *acum;
-  Block blocks[THREADS];
-  pthread_t tids[THREADS];
+  Block blocks[threads];
+  pthread_t tids[threads];
 
-  a = new int[SIZE];
-  fill_array(a, SIZE);
+  a = new int[size];
+  fill_array(a, size);
 
-  blocksize = SIZE / THREADS;
+  blocksize = size / threads;
 
-  for(i = 0; i < THREADS; i++){
+  for(i = 0; i < threads; i++){
     blocks[i].arr = a;
     blocks[i].start = i * blocksize;
 
-    if(i != (THREADS - 1)){
+    if(i != (threads - 1)){
       blocks[i].end = (i + 1) * blocksize;
     } else{
-      blocks[i].end = SIZE;
+      blocks[i].end = size;
     }
   }
 
@@ -99,11 +99,11 @@ int main(int argc, char* argv[]) {
 
     result = 0;
 
-    for(i = 0; i < THREADS; i++){
+    for(i = 0; i < threads; i++){
       pthread_create(&tids[i], NULL, primo_multihilo, (void*) &blocks[i]);
     }
 
-    for(i = 0; i < THREADS; i++){
+    for(i = 0; i < threads; i++){
       pthread_join(tids[i], (void**) &acum);
       delete acum;
     }
