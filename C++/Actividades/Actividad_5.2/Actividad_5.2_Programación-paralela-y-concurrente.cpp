@@ -45,20 +45,25 @@ void* primo_multihilo(void* param) {
       (*acum) += i;
     }
   }
-  
+
   return ((void**) acum);
 }
 
 int main(int argc, char* argv[]) {
   double correct = 838596693108;
+  double ms;
 
   /*----------------------------------Secuencial--------------------------------------*/
   double count= 0;
 
+  ms = 0;
+
   for(int i = 0; i<=size; i++){
+    start_timer();
     if(isPrimo(i) == true){
         count += i;
     }
+    ms += stop_timer();
   }
 
   if(count == correct){
@@ -69,9 +74,11 @@ int main(int argc, char* argv[]) {
 
   cout << "Suma final: " << count << endl;
 
+  cout << "avg time =  " << setprecision(5) << (ms / N) << "ms\n";
+
   /*----------------------------------Multi-hilo--------------------------------------*/
   int blocksize, i, j;
-  double ms, result, *acum;
+  double result, *acum;
   Block blocks[threads];
   pthread_t tids[threads];
 
@@ -106,7 +113,7 @@ int main(int argc, char* argv[]) {
 
     ms += stop_timer();
   }
-  
+
   if(result == correct){
     cout << "EXITO!!!   " << result << endl;
   }else{
