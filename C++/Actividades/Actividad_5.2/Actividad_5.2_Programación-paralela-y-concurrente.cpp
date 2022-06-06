@@ -11,7 +11,7 @@
 using namespace std;
 
 const int size = 5000000;
-const int threads = 4;
+const int threads = 8;
 
 typedef struct {
   int start, end;
@@ -51,30 +51,31 @@ void* primo_multihilo(void* param) {
 
 int main(int argc, char* argv[]) {
   double correct = 838596693108;
-  double ms;
+  double ms, ms2;
 
   /*----------------------------------Secuencial--------------------------------------*/
   double count= 0;
 
-  ms = 0;
+  ms2 = 0;
+
 
   for(int i = 0; i<=size; i++){
     start_timer();
     if(isPrimo(i) == true){
         count += i;
     }
-    ms += stop_timer();
+    ms2 += stop_timer();
   }
 
   if(count == correct){
-    cout << "EXITO!!!" << endl;
+    cout << "EXITO SECUENCIAL!!!" << endl;
   }else{
     cout << "FALLO!!!   " << count << "   !=   " << correct << endl;
   }
 
   cout << "Suma final: " << count << endl;
 
-  cout << "avg time =  " << setprecision(5) << (ms / N) << "ms\n";
+  cout << "avg time =  " << setprecision(5) << (ms2 / N) << "ms\n";
 
   /*----------------------------------Multi-hilo--------------------------------------*/
   int blocksize, i, j;
@@ -115,7 +116,7 @@ int main(int argc, char* argv[]) {
   }
 
   if(result == correct){
-    cout << "EXITO!!!   " << result << endl;
+    cout << "EXITO MULTI-THREAD!!!   " << result << endl;
   }else{
     cout << "FALLO!!!   "<< result << "   !=   " << correct << endl;
   }
