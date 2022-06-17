@@ -50,15 +50,15 @@ string resaltador(string archivo) {
       /*ya que tebemos el string, vemos si esta hace match con el regex, que basta solo con poner regex ya que se llama 
       al constructor*/
       if(regex_match(caracter, regex(variable))){
-        cuerpo = "<div class= 'Variables'>Variable: " + caracter + "</div>";
+        cuerpo = cuerpo + "<div class= 'Variables'>Variable: " + caracter + "</div>";
       }else if(regex_match(caracter, regex(reales))){
-        cuerpo = "<div class= 'Reales'>Número real: " + caracter + "</div>";
+        cuerpo = cuerpo + "<div class= 'Reales'>Número real: " + caracter + "</div>";
       }else if(regex_match(caracter, regex(comentarios))){
-        cuerpo = "<div class= 'Comentarios'>Comentario: " + caracter + "</div>";
+        cuerpo = cuerpo + "<div class= 'Comentarios'>Comentario: " + caracter + "</div>";
       }else if(regex_match(caracter, regex(especiales))){
-        cuerpo = "<div class= 'Especiales'>Caracter especial: " + caracter + "</div>";
+        cuerpo = cuerpo + "<div class= 'Especiales'>Caracter especial: " + caracter + "</div>";
       }else if(regex_match(caracter, regex(operadores))){
-        cuerpo = "<div class= 'Operadores'>Operador: " + caracter + "</div>";
+        cuerpo = cuerpo + "<div class= 'Operadores'>Operador: " + caracter + "</div>";
       }
     }
   }
