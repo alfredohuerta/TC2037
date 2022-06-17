@@ -10,10 +10,6 @@
 
 using namespace std;
 
-const int THREADS = 4;
-string encabezado = "<!DOCTYPE html><html lang='esp-mx'> <head> <meta charset='UTF-8'> <title>Resaltador de sintaxis</title> <style>body{color: beige;}.PReservadas{color: blue;}.Variables{color: blueviolet;}.Operadores{color: aqua;}.Reales{color: chartreuse;}.Especiales{color: crimson;}.Comentarios{color: gold;}</style> </head> <body>";
-
-
 string resaltador(string archivo) {
   fstream pruebas;
   string resultados, cuerpo;
@@ -66,32 +62,54 @@ string resaltador(string archivo) {
   return cuerpo;
 }
 
-/*void* resaltadorHilos(void* param){
+void* resaltadorHilos(void* param){
   string *cuerpo;
 
-  return ((void**) pag_web);
-}*/
+  resaltador(param);
+
+  return ((void**) cuerpo);
+}
 
 int main(int argc, char* argv[]) {  
+
   if (argc != 3) {
     cout << "usage: " << argv[0] << " filename1,..., filenamen\n";
     return -1;
   }
 
   /*-----------------------------------------Resaltador secuencial-----------------------------------------*/
+  string encabezado = "<!DOCTYPE html><html lang='esp-mx'> <head> <meta charset='UTF-8'> <title>Resaltador de sintaxis</title> <style>body{color: beige;}.PReservadas{color: blue;}.Variables{color: blueviolet;}.Operadores{color: aqua;}.Reales{color: chartreuse;}.Especiales{color: crimson;}.Comentarios{color: gold;}</style> </head> <body>";
+  string *cuerpo;
   for(int i = 1; i < argc; i++){
     encabezado = encabezado + resaltador(argv[i]);
   }
   encabezado = encabezado + "</body></html>";
 
   ofstream file;
-  file.open("Final.html");
+  file.open("FinalSecuencial.html");
 
   file << encabezado;
 
   file.close();
   /*-----------------------------------------Resaltador multihilos-----------------------------------------*/
-  //pthread_t tids[threads];
+  string encabezado = "<!DOCTYPE html><html lang='esp-mx'> <head> <meta charset='UTF-8'> <title>Resaltador de sintaxis</title> <style>body{color: beige;}.PReservadas{color: blue;}.Variables{color: blueviolet;}.Operadores{color: aqua;}.Reales{color: chartreuse;}.Especiales{color: crimson;}.Comentarios{color: gold;}</style> </head> <body>";
+  pthread_t analisis[argc];
+
+  for(int i = 0; i < argc; i++){
+    pthread_create(&analisis[i], NULL, resaltadorHilos, NULL);
+  }
+  for(int i = 0; i < argc; i++){
+    pthread_join(analisis[i], (void **) &cuerpo);
+    encabezado += (*cuerpo)
+    delete cuerpo;
+  }
+
+  ofstream file;
+  file.open("FinalHilos.html");
+
+  file << encabezado;
+
+  file.close();
 
   return 0;
 }
