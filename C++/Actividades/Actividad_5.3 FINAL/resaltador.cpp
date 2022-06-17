@@ -10,17 +10,17 @@
 
 using namespace std;
 
-const int TREADS = 4;
+const int THREADS = 4;
+string encabezado = "<!DOCTYPE html><html lang='esp-mx'> <head> <meta charset='UTF-8'> <title>Resaltador de sintaxis</title> <style>body{color: beige;}.PReservadas{color: blue;}.Variables{color: blueviolet;}.Operadores{color: aqua;}.Reales{color: chartreuse;}.Especiales{color: crimson;}.Comentarios{color: gold;}</style> </head> <body>";
 
-void resaltadorSecuencial(string archivo) {
+
+string resaltador(string archivo) {
   fstream pruebas;
-  string resultados;
+  string resultados, cuerpo;
   vector<char>::iterator it;
   pruebas.open(archivo, ios::in);
 
-
   while(getline(pruebas, resultados)){
-    string encabezado = "<!DOCTYPE html><html lang='esp-mx'> <head> <meta charset='UTF-8'> <title>Resaltador de sintaxis</title> <style>body{color: beige;}.PReservadas{color: blue;}.Variables{color: blueviolet;}.Operadores{color: aqua;}.Reales{color: chartreuse;}.Especiales{color: crimson;}.Comentarios{color: gold;}</style> </head> <body>";
 
     // definimos los operadores aritmeticos
     string variable = "[a-zA-Z][a-zA-Z_0-9]*";
@@ -50,31 +50,48 @@ void resaltadorSecuencial(string archivo) {
       /*ya que tebemos el string, vemos si esta hace match con el regex, que basta solo con poner regex ya que se llama 
       al constructor*/
       if(regex_match(caracter, regex(variable))){
-        encabezado = "<div class= 'Variables'>Variable: " + caracter + "</div>";
+        cuerpo = "<div class= 'Variables'>Variable: " + caracter + "</div>";
       }else if(regex_match(caracter, regex(reales))){
-        encabezado = "<div class= 'Reales'>Número real: " + caracter + "</div>";
+        cuerpo = "<div class= 'Reales'>Número real: " + caracter + "</div>";
       }else if(regex_match(caracter, regex(comentarios))){
-        encabezado = "<div class= 'Comentarios'>Comentario: " + caracter + "</div>";
+        cuerpo = "<div class= 'Comentarios'>Comentario: " + caracter + "</div>";
       }else if(regex_match(caracter, regex(especiales))){
-        encabezado = "<div class= 'Especiales'>Caracter especial: " + caracter + "</div>";
+        cuerpo = "<div class= 'Especiales'>Caracter especial: " + caracter + "</div>";
       }else if(regex_match(caracter, regex(operadores))){
-        encabezado = "<div class= 'Operadores'>Operador: " + caracter + "</div>";
+        cuerpo = "<div class= 'Operadores'>Operador: " + caracter + "</div>";
       }
     }
   }
+
+  return cuerpo;
 }
 
-void resaltadorHilos(){
-  
-}
+/*void* resaltadorHilos(void* param){
+  string *cuerpo;
 
-int main(int argc, char* argv[]) {
-  if (argc != 2) {
-    cout << "usage: " << argv[0] << " pathname\n";
+  return ((void**) pag_web);
+}*/
+
+int main(int argc, char* argv[]) {  
+  if (argc != 3) {
+    cout << "usage: " << argv[0] << " filename1,..., filenamen\n";
     return -1;
   }
 
-  resaltadorSecuencial(argv[1]);
+  /*-----------------------------------------Resaltador secuencial-----------------------------------------*/
+  for(int i = 1; i < argc; i++){
+    encabezado = encabezado + resaltador(argv[i]);
+  }
+  encabezado = encabezado + "</body></html>";
+
+  ofstream file;
+  file.open("Final.html");
+
+  file << encabezado;
+
+  file.close();
+  /*-----------------------------------------Resaltador multihilos-----------------------------------------*/
+  //pthread_t tids[threads];
 
   return 0;
 }
