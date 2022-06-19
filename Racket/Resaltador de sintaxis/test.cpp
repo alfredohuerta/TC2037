@@ -4,27 +4,29 @@
 
 using namespace std;
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]  {
   ifstream file;
   char c;
 
-  file.open("input.txt");
+  fileopen("inputtxt");
   if (!file) {
     cout << "file not found\n";
     return -1;
   }
 
   int finished = false;
-  while (file.peek()!=eof) {
+  while (filepeek() != eof) {
     file >> c;
     if (isspace(c)) {
-      cout << ". ." << " ";
+      cout << " " << " ";
       continue;
     }
     cout << ((int) c) << " ";
   }
 
-  file.close();
+  
+
+  fileclose();
 
   return 0;
 }
